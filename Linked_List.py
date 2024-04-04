@@ -24,6 +24,12 @@ class LinkedList:
             temp = temp.next
         return temp  
         
+    def set_value(self, index, value):
+        temp = self.get(index)
+        if (temp):
+            temp.value = value
+            return True
+        return False
 
     def append(self, value):
         new_node = Node(value)
@@ -85,4 +91,52 @@ class LinkedList:
         self.length += 1
         return True     
     
-my_linked_list = LinkedList(4)
+    def insert(self, index, value):
+        if (index < 0 or index > self.length):
+            return False
+        if (index == 0):
+            return self.prepend(value)
+        if (index == self.length):
+            return self.append(value)
+        new_node = Node(value)
+        prev = self.get(index - 1)
+        next = prev.next
+        prev.next = new_node
+        new_node.next = next
+        self.length += 1
+        return True
+
+    def remove(self, index):
+        if (index < 0 or index >= self.length):
+            return None
+        if (index == 0):
+            return self.pop_first()
+        if (index == self.length - 1):
+            return self.pop()
+        prev = self.get(index - 1)
+        item_to_be_deleted = prev.next
+        prev.next = item_to_be_deleted.next
+        item_to_be_deleted.next = None
+        self.length -= 1
+        return item_to_be_deleted
+
+    def reverse(self):
+        temp = self.head
+        self.head = self.tail
+        self.tail = temp
+
+        after = temp.next
+        before = None
+        for _ in range(self.length):
+            after = temp.next
+            temp.next = before
+            before = temp
+            temp = after
+
+my_linked_list = LinkedList(1)
+my_linked_list.append(2)
+my_linked_list.append(3)
+my_linked_list.append(4)
+my_linked_list.reverse()
+
+my_linked_list.print_list()
